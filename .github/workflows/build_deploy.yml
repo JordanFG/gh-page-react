@@ -1,0 +1,34 @@
+name: Test React App
+on:
+  # Lancer le workflow manuellement
+  workflow_dispatch:
+  # Lancer le workflow lorsqu'on fait un push
+  push:
+    branches:
+      - main
+      #   Lancer le workflow lorsqu'on fait un push sur des braches hotfix-* et hotfix-*
+      - "hotfix-*"
+      - " c"
+    # Ignorer le push lorsque la modification concerne unique les fichier du workflow
+    paths-ignore:
+      - ".github/workflows/*"
+  #  Lancer le worflow lorsqu'on ouvre une pull request
+  pull_request:
+    types:
+      - opened
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
+      - name: Code
+        uses: actions/checkout@v4
+      #   Ici on definit la version de node que l'on veut utiliser
+      - name: Install node v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install requirement of react
+        run: npm install
+      - name: Test
+        run: npm test
