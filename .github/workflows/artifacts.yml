@@ -1,0 +1,34 @@
+name: Deploy React App
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code
+        uses: actions/checkout@v4
+      - name: Install Node V20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install requirement
+        run: npm install
+      - name: Test react app
+        run: npm test > text.txt
+      - name: Upload Pages artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: testing
+          path: text.txt
+  download-test:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: testing

@@ -20,24 +20,8 @@ jobs:
         run: npm install
       - name: Test react app
         run: npm test
-  build:
+  build-deploy:
     needs: test
-    runs-on: ubuntu-latest
-    steps:
-      #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
-      - name: Code
-        uses: actions/checkout@v4
-      #   Ici on definit la version de node que l'on veut utiliser
-      - name: Install node v20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install requirement of react
-        run: npm install
-      - name: Build react app
-        run: npm run build
-  deploy:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
