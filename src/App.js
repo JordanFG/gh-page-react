@@ -15,7 +15,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React and Github action for integrate CI/CD
+          Learn React and Github For Freddy Jordan Kouam Kamgaing
         </a>
       </header>
     </div>
