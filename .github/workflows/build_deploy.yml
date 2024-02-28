@@ -1,23 +1,9 @@
-name: Test React App
-on:
-  # Lancer le workflow manuellement
-  workflow_dispatch:
-  # Lancer le workflow lorsqu'on fait un push
-  push:
-    branches:
-      - main
-      #   Lancer le workflow lorsqu'on fait un push sur des braches hotfix-* et hotfix-*
-      - "hotfix-*"
-      - " c"
-    # Ignorer le push lorsque la modification concerne unique les fichier du workflow
-    paths-ignore:
-      - ".github/workflows/*"
-  #  Lancer le worflow lorsqu'on ouvre une pull request
-  pull_request:
-    types:
-      - opened
+name: Deploy React App
+on: workflow_dispatch
+permissions:
+  contents: write
 jobs:
-  test:
+  test-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
@@ -30,5 +16,12 @@ jobs:
           node-version: 20
       - name: Install requirement of react
         run: npm install
-      - name: Test
+      - name: Test react App
         run: npm test
+      - name: Build react app
+        run: npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build
+          branch: gh-pages
