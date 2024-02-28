@@ -1,9 +1,26 @@
 name: Deploy React App
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 permissions:
   contents: write
 jobs:
-  test-build-and-deploy:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code
+        uses: actions/checkout@v4
+      - name: Install Node V20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install requirement
+        run: npm install
+      - name: Test react app
+        run: npm test
+  build:
     runs-on: ubuntu-latest
     steps:
       #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
@@ -16,11 +33,22 @@ jobs:
           node-version: 20
       - name: Install requirement of react
         run: npm install
-      - name: Test react App
-        run: npm test
       - name: Build react app
         run: npm run build
-      - name: Deploy
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      #   Le checkout permet de recuperer la derniere version du code disponible sur le repo
+      - name: Code
+        uses: actions/checkout@v4
+      #   Ici on definit la version de node que l'on veut utiliser
+      - name: Install node v20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install requirement of react
+        run: npm install
+      - name: Deploy react app
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: build
